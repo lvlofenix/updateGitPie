@@ -1,0 +1,9 @@
+C:\Users\lucas\Documents\GitHub\updateGitPie\updatePie\updatePie\bin\Debug\updatePie.exe.config
+C:\Users\lucas\Documents\GitHub\updateGitPie\updatePie\updatePie\bin\Debug\updatePie.exe
+C:\Users\lucas\Documents\GitHub\updateGitPie\updatePie\updatePie\bin\Debug\updatePie.pdb
+C:\Users\lucas\Documents\GitHub\updateGitPie\updatePie\updatePie\obj\Debug\updatePie.csprojResolveAssemblyReference.cache
+C:\Users\lucas\Documents\GitHub\updateGitPie\updatePie\updatePie\obj\Debug\updatePie.formUpie.resources
+C:\Users\lucas\Documents\GitHub\updateGitPie\updatePie\updatePie\obj\Debug\updatePie.Properties.Resources.resources
+C:\Users\lucas\Documents\GitHub\updateGitPie\updatePie\updatePie\obj\Debug\updatePie.csproj.GenerateResource.Cache
+C:\Users\lucas\Documents\GitHub\updateGitPie\updatePie\updatePie\obj\Debug\updatePie.exe
+C:\Users\lucas\Documents\GitHub\updateGitPie\updatePie\updatePie\obj\Debug\updatePie.pdb

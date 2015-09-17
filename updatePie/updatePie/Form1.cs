@@ -72,9 +72,11 @@ namespace updatePie
             {
                 if (File.Exists(myLocation + @"\" + fileinfo.Name)) File.Delete(myLocation + @"\" + fileinfo.Name);
                 File.Move(Path.GetTempPath() + upLocation+ @"\" +fileinfo.Name, myLocation + @"\" + fileinfo.Name);
-                pb_load.Increment(1);
-                    
+                pb_load.Increment(1); 
             }
+            MessageBox.Show("Atualização Realizada com sucesso.");
+            System.Diagnostics.Process.Start(myLocation + @"\GitPie.exe");
+            this.Close();
         }
 
         private void byePie()
