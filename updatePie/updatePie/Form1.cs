@@ -54,6 +54,7 @@ namespace updatePie
             }
             System.Diagnostics.Process.Start(upLocation + @"\GitPie.exe");
             Directory.Delete(myLocation, true);
+            File.Delete(upLocation + @"\updatePie.exe");
             this.Close();
         }
 
@@ -62,7 +63,7 @@ namespace updatePie
             if (Process.GetProcessesByName("getPie.exe").Length > 1)
             {
                 Process[] processes = Process.GetProcessesByName("getPie.exe");
-                foreach (Process process in processes){process.Kill();}
+                foreach (Process process in processes) { process.Kill(); }
             }
         }
     }
