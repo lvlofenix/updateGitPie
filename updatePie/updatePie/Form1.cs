@@ -15,7 +15,13 @@ namespace updatePie
         {
             try
             {
-                if (routerRly()){byePie();moveOn();}
+                if (routerRly()){
+                    while (byePie())
+                    {
+
+                    }
+                        moveOn();
+                }
                 else this.Close();
             }
             catch (Exception err)
@@ -58,13 +64,11 @@ namespace updatePie
             this.Close();
         }
 
-        private void byePie()
+        private Boolean byePie()
         {
             if (Process.GetProcessesByName("getPie.exe").Length > 1)
-            {
-                Process[] processes = Process.GetProcessesByName("getPie.exe");
-                foreach (Process process in processes) { process.Kill(); }
-            }
+            return true;
+            else return false;
         }
     }
 }
