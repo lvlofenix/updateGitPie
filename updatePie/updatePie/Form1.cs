@@ -9,18 +9,19 @@ namespace updatePie
     {
         public string myLocation = Application.StartupPath, upLocation = String.Empty;
         DirectoryInfo upDir;
-        public formUpie(){InitializeComponent();}
+        public formUpie(){InitializeComponent();MessageBox.Show("Iniciei meus componantes - Essa mensagem confirme que o executavel foi chamado"); }
 
         private void formUpie_Load(object sender, EventArgs e)
         {
             try
             {
+                System.Threading.Thread.Sleep(2002);
                 if (routerRly()){
                     while (byePie())
                     {
                         MessageBox.Show("estou em um loop esperando o gitpie fechar");
                     }
-                        MessageBox.Show("sai do loop, vou chamar a função moveon que iniciar a transferencia");
+                    MessageBox.Show("sai do loop, vou chamar a função moveon que iniciar a transferencia");
                     moveOn();
                 }
                 else this.Close();
