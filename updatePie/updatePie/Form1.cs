@@ -44,7 +44,7 @@ namespace updatePie
             upDir = new DirectoryInfo(myLocation);
             DirectoryInfo[] dirs = upDir.GetDirectories();
             MessageBox.Show("informei que o local onde estão os arquivos de atualização é: "+myLocation + Environment.NewLine + "e nele tem "+dirs.Length+"sub pastas");
-            for (int i = 0; i >= dirs.Length-1; i++)
+            for (int i = 0; i > dirs.Length; i++)
             {
                 MessageBox.Show("estou no for de volta "+i+" na pasta "+ myLocation + @"\" + dirs[i].Name);
                 upDir = new DirectoryInfo(myLocation +@"\"+dirs[i].Name);
