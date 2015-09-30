@@ -18,14 +18,15 @@ namespace updatePie
                 if (routerRly()){
                     while (byePie())
                     {
-
+                        MessageBox.Show("estou em um loop esperando o gitpie fechar");
                     }
-                        moveOn();
+                        MessageBox.Show("sai do loop, vou chamar a função moveon que iniciar a transferencia");
+                    moveOn();
                 }
                 else this.Close();
             }
             catch (Exception err)
-            {MessageBox.Show (err.Message, "Houston, we have a problem...",MessageBoxButtons.OK, MessageBoxIcon.Error);}
+            {MessageBox.Show (err+"", "Houston, we have a problem...",MessageBoxButtons.OK, MessageBoxIcon.Error);}
         }
 
         private Boolean routerRly()
@@ -42,25 +43,30 @@ namespace updatePie
         {
             upDir = new DirectoryInfo(myLocation);
             DirectoryInfo[] dirs = upDir.GetDirectories();
-            for (int i = 0; i >= dirs.Length; i++)
+            MessageBox.Show("informei que o local onde estão os arquivos de atualização é: "+myLocation + Environment.NewLine + "e nele tem "+dirs.Length+"sub pastas");
+            for (int i = 0; i >= dirs.Length-1; i++)
             {
+                MessageBox.Show("estou no for de volta "+i+" na pasta "+ myLocation + @"\" + dirs[i].Name);
                 upDir = new DirectoryInfo(myLocation +@"\"+dirs[i].Name);
                 FileInfo[] upAr = upDir.GetFiles("*.*");
                 pb_load.Maximum = upAr.Length;
                 foreach (FileInfo fileinfo in upAr)
                 {
-                    if(!Directory.Exists(upLocation + @"\" + dirs[i]))
+                    if (!Directory.Exists(upLocation + @"\" + dirs[i]))
                     {
                         Directory.CreateDirectory(upLocation + @"\" + dirs[i]);
                     }
+                    if (fileinfo.Name != "updatePie.exe") { 
                     if (File.Exists(upLocation + @"\" + dirs[i] + @"\" + fileinfo.Name)) File.Delete(upLocation + @"\" + dirs[i] + @"\" + fileinfo.Name);
                     File.Move(myLocation + @"\" + dirs[i] + @"\" + fileinfo.Name, upLocation + @"\" + dirs[i] + @"\" + fileinfo.Name);
                     pb_load.Increment(1);
+                    MessageBox.Show("movendo o arquivo: " + myLocation + @"\" + dirs[i] + @"\" + fileinfo.Name + Environment.NewLine + "para: " + upLocation + @"\" + dirs[i] + @"\" + fileinfo.Name);
+                }
                 }
             }
             System.Diagnostics.Process.Start(upLocation + @"\GitPie.exe");
-            Directory.Delete(myLocation, true);
-            File.Delete(upLocation + @"\updatePie.exe");
+            //Directory.Delete(myLocation, true);
+            //File.Delete(upLocation + @"\updatePie.exe");
             this.Close();
         }
 
