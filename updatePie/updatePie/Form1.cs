@@ -7,27 +7,36 @@ namespace updatePie
 {
     public partial class formUpie : Form
     {
-        public string myLocation = Application.StartupPath, upLocation = String.Empty;
+        public string myLocation = Application.StartupPath, upLocation = String.Empty, logtext = String.Empty;
         DirectoryInfo upDir;
-        public formUpie(){InitializeComponent();MessageBox.Show("Iniciei meus componantes - Essa mensagem confirme que o executavel foi chamado"); }
+        public formUpie(){InitializeComponent();}
 
         private void formUpie_Load(object sender, EventArgs e)
         {
             try
             {
-                System.Threading.Thread.Sleep(2002);
-                if (routerRly()){
+                System.Threading.Thread.Sleep(2042);
+                if (routerRly())
+                {
                     while (byePie())
                     {
-                        MessageBox.Show("estou em um loop esperando o gitpie fechar");
+                        log("Aguardando GitPie Fechar");
+                        System.Threading.Thread.Sleep(500);
                     }
-                    MessageBox.Show("sai do loop, vou chamar a função moveon que iniciar a transferencia");
+                    log("Gitpie Fechado. Iniciando processo.");
                     moveOn();
                 }
-                else this.Close();
+                else
+                {
+                    this.Close();
+                }
             }
             catch (Exception err)
-            {MessageBox.Show (err+"", "Houston, we have a problem...",MessageBoxButtons.OK, MessageBoxIcon.Error);}
+            {
+                log("ERRO CRITICO: "+err.Message);
+                log(err.ToString());
+                MessageBox.Show (err.Message, "Houston, we have a problem... Verifique o log dentro da pasta do GitPie!",MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private Boolean routerRly()
@@ -44,10 +53,8 @@ namespace updatePie
         {
             upDir = new DirectoryInfo(myLocation);
             DirectoryInfo[] dirs = upDir.GetDirectories();
-            MessageBox.Show("informei que o local onde estão os arquivos de atualização é: "+myLocation + Environment.NewLine + "e nele tem "+dirs.Length+"sub pastas");
             for (int i = 0; i > dirs.Length; i++)
             {
-                MessageBox.Show("estou no for de volta "+i+" na pasta "+ myLocation + @"\" + dirs[i].Name);
                 upDir = new DirectoryInfo(myLocation +@"\"+dirs[i].Name);
                 FileInfo[] upAr = upDir.GetFiles("*.*");
                 pb_load.Maximum = upAr.Length;
@@ -59,15 +66,15 @@ namespace updatePie
                     }
                     if (fileinfo.Name != "updatePie.exe") { 
                     if (File.Exists(upLocation + @"\" + dirs[i] + @"\" + fileinfo.Name)) File.Delete(upLocation + @"\" + dirs[i] + @"\" + fileinfo.Name);
-                    File.Move(myLocation + @"\" + dirs[i] + @"\" + fileinfo.Name, upLocation + @"\" + dirs[i] + @"\" + fileinfo.Name);
+                        File.Move(myLocation + @"\" + dirs[i] + @"\" + fileinfo.Name, upLocation + @"\" + dirs[i] + @"\" + fileinfo.Name);
+                        log("Arquivo atualizado: " + fileinfo.Name);
                     pb_load.Increment(1);
-                    MessageBox.Show("movendo o arquivo: " + myLocation + @"\" + dirs[i] + @"\" + fileinfo.Name + Environment.NewLine + "para: " + upLocation + @"\" + dirs[i] + @"\" + fileinfo.Name);
-                }
+                    }
                 }
             }
             System.Diagnostics.Process.Start(upLocation + @"\GitPie.exe");
-            //Directory.Delete(myLocation, true);
-            //File.Delete(upLocation + @"\updatePie.exe");
+            log("Fim da atualização...");
+            saveLog();
             this.Close();
         }
 
@@ -76,6 +83,24 @@ namespace updatePie
             if (Process.GetProcessesByName("getPie.exe").Length > 1)
             return true;
             else return false;
+        }
+
+        private void log(string text)
+        {
+            logtext += Environment.NewLine + DateTime.Now +" > "+ text;
+        }
+
+        private void saveLog()
+        {
+            string txt = upLocation + @"/log_erro_updateGitPie.txt";
+            FileInfo aFile = new FileInfo(txt);
+            if (!aFile.Exists)
+            {
+                System.IO.File.Create(txt).Close();
+            }
+                System.IO.TextWriter arqTXT = System.IO.File.AppendText(logtext);
+                arqTXT.WriteLine(logtext);
+                arqTXT.Close();
         }
     }
 }

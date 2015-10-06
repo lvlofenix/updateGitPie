@@ -35,7 +35,7 @@
             // 
             this.pb_load.Location = new System.Drawing.Point(5, 12);
             this.pb_load.Name = "pb_load";
-            this.pb_load.Size = new System.Drawing.Size(458, 23);
+            this.pb_load.Size = new System.Drawing.Size(577, 23);
             this.pb_load.TabIndex = 0;
             // 
             // formUpie
@@ -43,7 +43,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(471, 46);
+            this.ClientSize = new System.Drawing.Size(591, 47);
             this.ControlBox = false;
             this.Controls.Add(this.pb_load);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
