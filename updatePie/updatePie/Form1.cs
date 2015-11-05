@@ -7,7 +7,7 @@ namespace updatePie
 {
     public partial class formUpie : Form
     {
-        public string myLocation = Application.StartupPath, upLocation = String.Empty, logtext = String.Empty;
+        public string myLocation = Application.StartupPath, upLocation = String.Empty;
         DirectoryInfo upDir;
         public formUpie(){InitializeComponent();}
 
@@ -15,27 +15,22 @@ namespace updatePie
         {
             try
             {
-                System.Threading.Thread.Sleep(2042);
                 if (routerRly())
                 {
-                    while (byePie())
-                    {
-                        log("Aguardando GitPie Fechar");
-                        System.Threading.Thread.Sleep(500);
-                    }
-                    log("Gitpie Fechado. Iniciando processo.");
+                    while (byePie()){System.Threading.Thread.Sleep(500);}
+
+                    System.Threading.Thread.Sleep(2042);
+                    while (byePie()){System.Threading.Thread.Sleep(500);}
+
                     moveOn();
                 }
-                else
-                {
-                    this.Close();
-                }
+                else this.Close();
             }
             catch (Exception err)
             {
-                log("ERRO CRITICO: "+err.Message);
-                log(err.ToString());
-                MessageBox.Show (err.Message, "Houston, we have a problem... Verifique o log dentro da pasta do GitPie!",MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show (err.Message + err, "Houston, we have a problem... Verifique o log dentro da pasta do GitPie!"
+                                ,MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.Close();
             }
         }
 
@@ -53,27 +48,38 @@ namespace updatePie
         {
             upDir = new DirectoryInfo(upLocation);
             DirectoryInfo[] dirs = upDir.GetDirectories();
-            for (int i = 0; i > dirs.Length; i++)
+
+            //for responsavel pelas subs pastas
+            for (int i = 0; i < dirs.Length; i++)
             {
                 upDir = new DirectoryInfo(upLocation +@"\"+dirs[i].Name);
                 FileInfo[] upAr = upDir.GetFiles("*.*");
-                pb_load.Maximum = upAr.Length;
                 foreach (FileInfo fileinfo in upAr)
                 {
-                    if (!Directory.Exists(myLocation + @"\" + dirs[i]))
-                    {
-                        Directory.CreateDirectory(myLocation + @"\" + dirs[i]);
-                    }
-                    if (File.Exists(myLocation + @"\" + dirs[i] + @"\" + fileinfo.Name)) File.Delete(myLocation + @"\" + dirs[i] + @"\" + fileinfo.Name);
-                    File.Move(upLocation + @"\" + dirs[i] + @"\" + fileinfo.Name, myLocation + @"\" + dirs[i] + @"\" + fileinfo.Name);
-                    log("Arquivo atualizado: " + fileinfo.Name);
-                    pb_load.Increment(1);
+                    moveArch(upLocation + @"\" + dirs[i], myLocation + @"\" + dirs[i], fileinfo.Name);
                 }
             }
-            System.Diagnostics.Process.Start(upLocation + @"\GitPie.exe");
-            log("Fim da atualização...");
-            saveLog();
+
+            //for responsavel pela pasta raiz
+            upDir = new DirectoryInfo(upLocation);
+            FileInfo[] upAraiz = upDir.GetFiles("*.*");
+            foreach (FileInfo fileinforaiz in upAraiz)
+            {
+                moveArch(upLocation + @"\", myLocation + @"\", fileinforaiz.Name);
+            }
+
+            System.Diagnostics.Process.Start(myLocation + @"\GitPie.exe");
             this.Close();
+        }
+
+        private void moveArch(string local, string destino,string arquivo)
+        {
+            if (!Directory.Exists(destino))
+            {
+                Directory.CreateDirectory(destino);
+            }
+            if (File.Exists(destino + @"\" + arquivo)) File.Delete(destino + @"\" + arquivo);
+            File.Move(local + @"\" + arquivo, destino + @"\" + arquivo);
         }
 
         private Boolean byePie()
@@ -81,24 +87,6 @@ namespace updatePie
             if (Process.GetProcessesByName("getPie.exe").Length > 1)
             return true;
             else return false;
-        }
-
-        private void log(string text)
-        {
-            logtext += Environment.NewLine + DateTime.Now +" > "+ text;
-        }
-
-        private void saveLog()
-        {
-            string txt = myLocation + @"/log_erro_updateGitPie.txt";
-            FileInfo aFile = new FileInfo(txt);
-            if (!aFile.Exists)
-            {
-                System.IO.File.Create(txt).Close();
-            }
-                System.IO.TextWriter arqTXT = System.IO.File.AppendText(logtext);
-                arqTXT.WriteLine(logtext);
-                arqTXT.Close();
         }
     }
 }
