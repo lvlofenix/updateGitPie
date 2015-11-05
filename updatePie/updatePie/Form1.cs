@@ -51,25 +51,23 @@ namespace updatePie
         
         private void moveOn()
         {
-            upDir = new DirectoryInfo(myLocation);
+            upDir = new DirectoryInfo(upLocation);
             DirectoryInfo[] dirs = upDir.GetDirectories();
             for (int i = 0; i > dirs.Length; i++)
             {
-                upDir = new DirectoryInfo(myLocation +@"\"+dirs[i].Name);
+                upDir = new DirectoryInfo(upLocation +@"\"+dirs[i].Name);
                 FileInfo[] upAr = upDir.GetFiles("*.*");
                 pb_load.Maximum = upAr.Length;
                 foreach (FileInfo fileinfo in upAr)
                 {
-                    if (!Directory.Exists(upLocation + @"\" + dirs[i]))
+                    if (!Directory.Exists(myLocation + @"\" + dirs[i]))
                     {
-                        Directory.CreateDirectory(upLocation + @"\" + dirs[i]);
+                        Directory.CreateDirectory(myLocation + @"\" + dirs[i]);
                     }
-                    if (fileinfo.Name != "updatePie.exe") { 
-                    if (File.Exists(upLocation + @"\" + dirs[i] + @"\" + fileinfo.Name)) File.Delete(upLocation + @"\" + dirs[i] + @"\" + fileinfo.Name);
-                        File.Move(myLocation + @"\" + dirs[i] + @"\" + fileinfo.Name, upLocation + @"\" + dirs[i] + @"\" + fileinfo.Name);
-                        log("Arquivo atualizado: " + fileinfo.Name);
+                    if (File.Exists(myLocation + @"\" + dirs[i] + @"\" + fileinfo.Name)) File.Delete(myLocation + @"\" + dirs[i] + @"\" + fileinfo.Name);
+                    File.Move(upLocation + @"\" + dirs[i] + @"\" + fileinfo.Name, myLocation + @"\" + dirs[i] + @"\" + fileinfo.Name);
+                    log("Arquivo atualizado: " + fileinfo.Name);
                     pb_load.Increment(1);
-                    }
                 }
             }
             System.Diagnostics.Process.Start(upLocation + @"\GitPie.exe");
@@ -92,7 +90,7 @@ namespace updatePie
 
         private void saveLog()
         {
-            string txt = upLocation + @"/log_erro_updateGitPie.txt";
+            string txt = myLocation + @"/log_erro_updateGitPie.txt";
             FileInfo aFile = new FileInfo(txt);
             if (!aFile.Exists)
             {
