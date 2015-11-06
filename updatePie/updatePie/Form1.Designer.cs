@@ -36,6 +36,7 @@
             this.pb_load.Location = new System.Drawing.Point(5, 12);
             this.pb_load.Name = "pb_load";
             this.pb_load.Size = new System.Drawing.Size(577, 23);
+            this.pb_load.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
             this.pb_load.TabIndex = 0;
             // 
             // formUpie

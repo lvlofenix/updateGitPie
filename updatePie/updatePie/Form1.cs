@@ -17,18 +17,15 @@ namespace updatePie
             {
                 if (routerRly())
                 {
-                    while (byePie()){System.Threading.Thread.Sleep(500);}
-
+                    while (byePie()) { System.Threading.Thread.Sleep(500); }
                     System.Threading.Thread.Sleep(2042);
-                    while (byePie()){System.Threading.Thread.Sleep(500);}
-
                     moveOn();
                 }
                 else this.Close();
             }
             catch (Exception err)
             {
-                MessageBox.Show (err.Message + err, "Houston, we have a problem... Verifique o log dentro da pasta do GitPie!"
+                MessageBox.Show (err.Message + err, "Houston, we have a problem..."
                                 ,MessageBoxButtons.OK, MessageBoxIcon.Error);
                 this.Close();
             }
@@ -36,8 +33,12 @@ namespace updatePie
 
         private Boolean routerRly()
         {
+            string upLocation = String.Empty;
             string[] args = Environment.GetCommandLineArgs();
-            foreach (string arg in args){upLocation = arg.ToString();}
+            foreach (string arg in args){upLocation += arg.ToString();}
+            upLocation = upLocation.Replace(myLocation, "");
+            upLocation = upLocation.Replace(@"\updatePie.exe", null);
+            this.upLocation = upLocation;
             DirectoryInfo dir = new DirectoryInfo(upLocation);
             if (upLocation.Length > 0 & dir.Exists)
             return true;
@@ -67,8 +68,14 @@ namespace updatePie
             {
                 moveArch(upLocation + @"\", myLocation + @"\", fileinforaiz.Name);
             }
+            try
+            {
+                System.Diagnostics.Process.Start(myLocation + @"\GitPie.exe");
+            }
+            catch
+            {
 
-            System.Diagnostics.Process.Start(myLocation + @"\GitPie.exe");
+            }
             this.Close();
         }
 
