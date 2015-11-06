@@ -33,16 +33,27 @@ namespace updatePie
 
         private Boolean routerRly()
         {
-            string upLocation = String.Empty;
-            string[] args = Environment.GetCommandLineArgs();
-            foreach (string arg in args){upLocation += arg.ToString();}
-            upLocation = upLocation.Replace(myLocation, "");
-            upLocation = upLocation.Replace(@"\updatePie.exe", null);
-            this.upLocation = upLocation;
-            DirectoryInfo dir = new DirectoryInfo(upLocation);
-            if (upLocation.Length > 0 & dir.Exists)
-            return true;
-            else return false;
+
+            // Alteração feita para não receber mais o codigo por parametro e sim por variavel de ambiente - codigo comentado caso seja necessario reverter o processo.
+
+            /** string upLocation = String.Empty;
+             string[] args = Environment.GetCommandLineArgs();
+             foreach (string arg in args){upLocation += arg.ToString();}
+             upLocation = upLocation.Replace(myLocation, "");
+             upLocation = upLocation.Replace(@"\updatePie.exe", null); **/
+            try
+            {
+                this.upLocation = System.Environment.GetEnvironmentVariable("UPDATE_FILES_PATH"); //upLocation;
+                DirectoryInfo dir = new DirectoryInfo(upLocation);
+                if (upLocation.Length > 0 & dir.Exists)
+                    return true;
+                else return false;
+            }
+            catch
+            {
+                return false;
+            }
+
         }
         
         private void moveOn()
@@ -64,18 +75,9 @@ namespace updatePie
             //for responsavel pela pasta raiz
             upDir = new DirectoryInfo(upLocation);
             FileInfo[] upAraiz = upDir.GetFiles("*.*");
-            foreach (FileInfo fileinforaiz in upAraiz)
-            {
-                moveArch(upLocation + @"\", myLocation + @"\", fileinforaiz.Name);
-            }
-            try
-            {
-                System.Diagnostics.Process.Start(myLocation + @"\GitPie.exe");
-            }
-            catch
-            {
-
-            }
+            foreach (FileInfo fileinforaiz in upAraiz) moveArch(upLocation + @"\", myLocation + @"\", fileinforaiz.Name);
+            try{System.Diagnostics.Process.Start(myLocation + @"\GitPie.exe"); }
+            catch{}
             this.Close();
         }
 
